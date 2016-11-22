@@ -5,9 +5,7 @@ from urlparse import urljoin
 from urllib import urlencode
 
 from synolopy.errors import *
-
-
-TIMEOUT = 10
+import synolopy.params
 
 
 # ------------------------------------------------------------------------------
@@ -145,9 +143,13 @@ class CGI(PathElement):
                     'has been defined' % node.path()
                 )
             session = manager.session(node) or manager.credentials(node)
-            return requests.get(url, cookies=session, timeout=TIMEOUT)
+            return requests.get(url, cookies=session, \
+				timeout=synolopy.params.timeout, \
+				verify = synolopy.params.verifySSL)
         else:
-            return requests.get(url, timeout=TIMEOUT)
+            return requests.get(url, \
+				timeout=synolopy.params.timeout, \
+				verify = synolopy.params.verifySSL)
 
 
 # ------------------------------------------------------------------------------

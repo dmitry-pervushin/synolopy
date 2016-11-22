@@ -2,6 +2,7 @@ import requests
 
 from synolopy.cgi import CGIFactory, SessionManager, ValidationManager
 from synolopy.errors import API_ERROR, SynologyException
+import synolopy.params
 
 
 class _NasValidationManager(ValidationManager):
@@ -31,7 +32,9 @@ class _NasSessionManager(SessionManager):
                                 account=self.login, passwd=self.password,
                                 session=node.path()[:-1], format='cookie')
 
-        resp = requests.get(url, timeout=10, )
+        resp = requests.get(url, \
+			timeout=synolopy.params.timeout,\
+			verify=synolopy.params.verifySSL )
         cookie = _NasValidationManager.validate(resp)
         sid = dict(id=cookie['sid'])
 
